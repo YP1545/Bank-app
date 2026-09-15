@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: ab4c39e3-21dc-4a70-8365-8271e079f7eb
+
+cloudResources:
+  collections:
+    ../postman/collections/Bank App - In-Memory REST API: 617e62cc-3623-4e63-bc15-b90e4d39f2c2
+
+# All resources in the `postman/` folder are automatically registered in Local View.
+# Point to additional files outside the `postman/` folder to register them individually. Example:
+#localResources:
+#  collections:
+#    - ../tests/E2E Test Collection/

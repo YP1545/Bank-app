@@ -1,0 +1,6 @@
+$kind: collection
+description: Test collection for the Simple Bank Application's in-memory REST API (Users, Accounts, Transactions).
+variables:
+  baseUrl: http://localhost:8080
+  userId: "1"
+  accountId: "1"
