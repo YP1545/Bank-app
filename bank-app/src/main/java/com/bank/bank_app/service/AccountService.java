@@ -15,7 +15,10 @@ public class AccountService {
 
     private List<Account> accounts = new ArrayList<>();
 
-    private AtomicLong idCounter = new AtomicLong(1)    ;
+    private AtomicLong idCounter = new AtomicLong(1);
+    @Autowired
+    private TransactionService transactionService;
+
 
     @Autowired
     private UserService userService;
@@ -54,6 +57,7 @@ public class AccountService {
             throw new IllegalArgumentException("Account not found: " + accountId);
         }
         account.setBalance(account.getBalance().add(amount));
+        transactionService.recordTransaction(accountId, "DEPOSIT", amount);
         return account; 
     }
 
@@ -72,6 +76,7 @@ public class AccountService {
         }
 
         account.setBalance(account.getBalance().subtract(amount));
+        transactionService.recordTransaction(accountId, "WITHDRAWAL", amount);
         return account;
     }
 }
