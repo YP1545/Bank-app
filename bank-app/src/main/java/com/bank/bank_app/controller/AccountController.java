@@ -48,6 +48,11 @@ public class AccountController {
         return accountService.withdraw(id, request.amount);
     }
 
+    @PostMapping("/{id}/delete")
+    public Account deleteAccount(@PathVariable Long id) {
+        return accountService.deleteAccount(id);
+    }
+
     public static class CreateAccountRequest {
         public Long userId;
         public String accountType;

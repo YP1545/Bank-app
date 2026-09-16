@@ -35,6 +35,15 @@ public class AccountService {
         return account;
     }
 
+    public Account deleteAccount(Long accountId) {
+        Account account = getAccount(accountId);
+        if (account == null) {
+            throw new IllegalArgumentException("Account not found: " + accountId);
+        }
+        accounts.remove(account);
+        return account;
+    }
+
     public Account getAccount(Long accountId) {
         for (Account account : accounts) {
             if (account.getId().equals(accountId)) {
