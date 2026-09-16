@@ -27,14 +27,30 @@ public class UserService {
         return users;
     }
     
+    public User deleteUser(Long id) {
+        User user = getUserById(id);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found: " + id);
+        }
+        users.remove(user);
+        return user;
+    }
 
+    public User updateUser(Long id, User updatedUser) {
+        User existingUser = getUserById(id);
+        if (existingUser == null) {
+            throw new IllegalArgumentException("User not found: " + id);
+        }
+        existingUser.setName(updatedUser.getName());
+        existingUser.setEmail(updatedUser.getEmail());
+        return existingUser;
+    }
     public User getUserById(Long id) {
         for (User user : users) {
             if (user.getId().equals(id)) {
                 return user;
             }
         }
-        // TODO: return null if none match
         return null;
     }
 }
