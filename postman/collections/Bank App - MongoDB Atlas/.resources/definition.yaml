@@ -1,0 +1,6 @@
+$kind: collection
+description: Test collection for the Simple Bank Application's MongoDB-backed REST API (Users, Accounts, Transactions). All ids are Mongo ObjectId strings.
+variables:
+  baseUrl: http://localhost:8080
+  userId: ""
+  accountId: ""

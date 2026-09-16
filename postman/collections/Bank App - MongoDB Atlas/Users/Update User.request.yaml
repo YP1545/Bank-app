@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{baseUrl}}/api/users/{{userId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "John Updated",
+      "email": "john.updated@example.com"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Name was updated', function () {
+          pm.expect(pm.response.json().name).to.eql('John Updated');
+      });
+    language: text/javascript
+order: 5000

@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{baseUrl}}/api/accounts"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "userId": "{{userId}}",
+      "accountType": "SAVINGS"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Balance starts at 0, id is set', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('id');
+          pm.expect(Number(jsonData.balance)).to.eql(0);
+          pm.collectionVariables.set('accountId', jsonData.id);
+      });
+    language: text/javascript
+order: 1000

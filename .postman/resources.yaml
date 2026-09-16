@@ -2,9 +2,12 @@
 workspace:
   id: ab4c39e3-21dc-4a70-8365-8271e079f7eb
 
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
 cloudResources:
   collections:
     ../postman/collections/Bank App - In-Memory REST API: 617e62cc-3623-4e63-bc15-b90e4d39f2c2
+    ../postman/collections/Bank App - MongoDB Atlas: 1eee9e93-7a44-4b6a-bd79-d53680310e8e
 
 # All resources in the `postman/` folder are automatically registered in Local View.
 # Point to additional files outside the `postman/` folder to register them individually. Example:
