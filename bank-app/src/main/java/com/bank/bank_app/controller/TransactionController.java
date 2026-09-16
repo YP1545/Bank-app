@@ -14,7 +14,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Transaction> recordTransaction(
-            @RequestParam Long accountId,
+            @RequestParam String accountId,
             @RequestParam String type,
             @RequestParam BigDecimal amount) {
         Transaction transaction = transactionService.recordTransaction(accountId, type, amount);
@@ -22,7 +22,7 @@ public class TransactionController {
     }
 
     @GetMapping("/account/{accountId}")
-    public ResponseEntity<List<Transaction>> getTransactionsForAccount(@PathVariable Long accountId) {
+    public ResponseEntity<List<Transaction>> getTransactionsForAccount(@PathVariable String accountId) {
         List<Transaction> transactions = transactionService.getTransactionsForAccount(accountId);
         return ResponseEntity.ok(transactions);
     }

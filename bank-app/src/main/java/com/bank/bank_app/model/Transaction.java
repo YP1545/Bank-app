@@ -1,12 +1,17 @@
 package com.bank.bank_app.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Document(collection = "transactions")
 public class Transaction {
 
-    private Long id;
-    private Long accountId;
+    @Id
+    private String id;
+    private String accountId;
     private String type;
     private BigDecimal amount;
     private LocalDateTime date;
@@ -14,26 +19,26 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Long accountId, String type, BigDecimal amount) {
+    public Transaction(String accountId, String type, BigDecimal amount) {
         this.accountId = accountId;
         this.type = type;
         this.amount = amount;
         this.date = LocalDateTime.now();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Long accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 

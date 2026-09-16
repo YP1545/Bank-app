@@ -23,7 +23,7 @@ public class AccountController {
     private TransactionService transactionService;
 
     @GetMapping("/{id}/transactions")
-    public List<Transaction> getTransactions(@PathVariable Long id) {
+    public List<Transaction> getTransactions(@PathVariable String id) {
         return transactionService.getTransactionsForAccount(id);
     }
 
@@ -33,28 +33,28 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccount(@PathVariable Long id) {
+    public ResponseEntity<Account> getAccount(@PathVariable String id) {
         Account account = accountService.getAccount(id);
         return account == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(account);
     }
 
     @PostMapping("/{id}/deposit")
-    public Account deposit(@PathVariable Long id, @RequestBody AmountRequest request) {
+    public Account deposit(@PathVariable String id, @RequestBody AmountRequest request) {
         return accountService.deposit(id, request.amount);
     }
 
     @PostMapping("/{id}/withdraw")
-    public Account withdraw(@PathVariable Long id, @RequestBody AmountRequest request) {
+    public Account withdraw(@PathVariable String id, @RequestBody AmountRequest request) {
         return accountService.withdraw(id, request.amount);
     }
 
     @PostMapping("/{id}/delete")
-    public Account deleteAccount(@PathVariable Long id) {
+    public Account deleteAccount(@PathVariable String id) {
         return accountService.deleteAccount(id);
     }
 
     public static class CreateAccountRequest {
-        public Long userId;
+        public String userId;
         public String accountType;
     }
 

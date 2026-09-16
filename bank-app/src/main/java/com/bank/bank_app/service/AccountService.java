@@ -2,58 +2,58 @@ package com.bank.bank_app.service;
 
 import com.bank.bank_app.model.Account;
 import com.bank.bank_app.model.User;
+import com.bank.bank_app.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class AccountService {
 
-    private List<Account> accounts = new ArrayList<>();
-    private AtomicLong idCounter = new AtomicLong(1);
-
+    private AccountRepository accountRepository;
     private UserService userService;
     private TransactionService transactionService;
 
-    public AccountService(UserService userService, TransactionService transactionService) {
+    public AccountService(AccountRepository accountRepository, UserService userService, TransactionService transactionService) {
+        this.accountRepository = accountRepository;
         this.userService = userService;
         this.transactionService = transactionService;
+        userService.setAccountService(this);
     }
 
-    public Account createAccount(Long userId, String accountType) {
+    public Account createAccount(String userId, String accountType) {
         User user = userService.getUserById(userId);
         if (user == null) {
             throw new IllegalArgumentException("User not found: " + userId);
         }
 
         Account account = new Account(userId, accountType);
-        account.setId(idCounter.getAndIncrement());
-        accounts.add(account);
-        return account;
+        return accountRepository.save(account);
     }
 
-    public Account deleteAccount(Long accountId) {
+    public Account deleteAccount(String accountId) {
         Account account = getAccount(accountId);
         if (account == null) {
             throw new IllegalArgumentException("Account not found: " + accountId);
         }
-        accounts.remove(account);
+        accountRepository.deleteById(accountId);
         return account;
     }
 
-    public Account getAccount(Long accountId) {
-        for (Account account : accounts) {
-            if (account.getId().equals(accountId)) {
-                return account;
-            }
-        }
-        return null;
+    public void deleteAccountsByUserId(String userId) {
+        var accounts = accountRepository.findByUserId(userId);
+        accounts.forEach(account -> {
+            account.setBalance(BigDecimal.ZERO);
+            accountRepository.save(account);
+        });
+        accountRepository.deleteAll(accounts);
     }
 
-    public Account deposit(Long accountId, BigDecimal amount) {
+    public Account getAccount(String accountId) {
+        return accountRepository.findById(accountId).orElse(null);
+    }
+
+    public Account deposit(String accountId, BigDecimal amount) {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Deposit amount must be positive");
         }
@@ -63,11 +63,12 @@ public class AccountService {
             throw new IllegalArgumentException("Account not found: " + accountId);
         }
         account.setBalance(account.getBalance().add(amount));
+        Account saved = accountRepository.save(account);
         transactionService.recordTransaction(accountId, "DEPOSIT", amount);
-        return account;
+        return saved;
     }
 
-    public Account withdraw(Long accountId, BigDecimal amount) {
+    public Account withdraw(String accountId, BigDecimal amount) {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Withdrawal amount must be positive");
         }
@@ -82,7 +83,8 @@ public class AccountService {
         }
 
         account.setBalance(account.getBalance().subtract(amount));
+        Account saved = accountRepository.save(account);
         transactionService.recordTransaction(accountId, "WITHDRAW", amount);
-        return account;
+        return saved;
     }
 }

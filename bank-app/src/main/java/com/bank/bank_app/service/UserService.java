@@ -1,56 +1,56 @@
 package com.bank.bank_app.service;
 
 import com.bank.bank_app.model.User;
+import com.bank.bank_app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class UserService {
 
-    private List<User> users = new ArrayList<>();
+    private AccountService accountService;
 
-    private AtomicLong idCounter = new AtomicLong(1);
+    private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User createUser(User user) {
-        user.setId(idCounter.getAndIncrement());
-        
-        users.add(user);
-        return user;
+        return userRepository.save(user);
     }
 
-    // Return all users
     public List<User> getAllUsers() {
-        
-        return users;
-    }
-    
-    public User deleteUser(Long id) {
-        User user = getUserById(id);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found: " + id);
-        }
-        users.remove(user);
-        return user;
+        return userRepository.findAll();
     }
 
-    public User updateUser(Long id, User updatedUser) {
-        User existingUser = getUserById(id);
-        if (existingUser == null) {
-            throw new IllegalArgumentException("User not found: " + id);
-        }
-        existingUser.setName(updatedUser.getName());
-        existingUser.setEmail(updatedUser.getEmail());
-        return existingUser;
+    public User getUserById(String id) {
+        return userRepository.findById(id).orElse(null);
     }
-    public User getUserById(Long id) {
-        for (User user : users) {
-            if (user.getId().equals(id)) {
-                return user;
-            }
+
+    public void setAccountService(AccountService accountService) {
+    this.accountService = accountService;
+}
+    public User updateUser(String id, User updatedUser) {
+        User existing = userRepository.findById(id).orElse(null);
+        if (existing == null) {
+            return null;
         }
+        existing.setName(updatedUser.getName());
+        existing.setEmail(updatedUser.getEmail());
+        return userRepository.save(existing);
+    }
+
+    public User DeleteUserById(String id) {
+    User existing = userRepository.findById(id).orElse(null);
+    if (existing == null) {
         return null;
     }
+    if (accountService != null) {
+        accountService.deleteAccountsByUserId(id);
+    }
+    userRepository.deleteById(id);
+    return existing;
+}
 }

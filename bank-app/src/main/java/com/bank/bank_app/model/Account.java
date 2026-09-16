@@ -1,35 +1,41 @@
 package com.bank.bank_app.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.math.BigDecimal;
 
+@Document(collection = "accounts")
 public class Account {
-    private Long id;
-    private Long userId;
+
+    @Id
+    private String id;
+    private String userId;
     private BigDecimal balance;
     private String accountType;
 
     public Account() {
     }
 
-    public Account(Long userId, String accountType) {
+    public Account(String userId, String accountType) {
         this.userId = userId;
         this.accountType = accountType;
         this.balance = BigDecimal.ZERO;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
