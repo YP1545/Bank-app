@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { authFetch } from '../utils/auth';
+import { API_BASE_URL } from '../utils/api';
 
 function Deposit() {
   const { accountId } = useParams();
@@ -11,7 +13,7 @@ function Deposit() {
     event.preventDefault();
     setError('');
 
-    const response = await fetch(`http://localhost:8080/api/accounts/${accountId}/deposit`, {
+    const response = await authFetch(`${API_BASE_URL}/api/accounts/${accountId}/deposit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ amount: Number(amount) }),
@@ -39,6 +41,9 @@ function Deposit() {
         <button type="submit">Submit</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      <p>
+        <Link to={`/accounts/${accountId}`}>&larr; Back to Account</Link>
+      </p>
     </div>
   );
 }

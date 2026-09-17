@@ -8,6 +8,7 @@ cloudResources:
   collections:
     ../postman/collections/Bank App - In-Memory REST API: 617e62cc-3623-4e63-bc15-b90e4d39f2c2
     ../postman/collections/Bank App - MongoDB Atlas: 1eee9e93-7a44-4b6a-bd79-d53680310e8e
+    ../postman/collections/Bank App - JWT Auth: ecc55164-ced0-4640-968c-a1f614fa1146
 
 # All resources in the `postman/` folder are automatically registered in Local View.
 # Point to additional files outside the `postman/` folder to register them individually. Example:

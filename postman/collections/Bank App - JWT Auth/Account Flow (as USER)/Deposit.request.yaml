@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/api/accounts/{{accountId}}/deposit"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{userToken}}
+body:
+  type: text
+  content: |-
+    {
+      "amount": 500
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200', function () {
+          pm.response.to.have.status(200);
+      });
+    language: text/javascript
+order: 3000

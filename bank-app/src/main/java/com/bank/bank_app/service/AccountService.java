@@ -6,6 +6,7 @@ import com.bank.bank_app.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -67,6 +68,9 @@ public class AccountService {
         transactionService.recordTransaction(accountId, "DEPOSIT", amount);
         return saved;
     }
+    public List<Account> getAccountsByUserId(String userId) {
+    return accountRepository.findByUserId(userId);
+}
 
     public Account withdraw(String accountId, BigDecimal amount) {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {

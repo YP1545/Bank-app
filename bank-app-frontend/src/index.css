@@ -55,6 +55,7 @@ h1 {
   list-style: none;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 24px;
   margin: 0;
   padding: 0 0 16px;
@@ -76,6 +77,12 @@ h1 {
 .nav-links a.active {
   color: var(--accent);
   border-bottom-color: var(--accent);
+}
+
+.nav-links button {
+  margin: 0;
+  padding: 6px 14px;
+  font-size: 0.85rem;
 }
 
 /* Forms */
@@ -177,8 +184,21 @@ footer {
   border-top: 1px solid var(--border);
 }
 
-/* Data page customer list */
-.customer-list p {
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
+/* My Accounts list */
+.account-list-item {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.account-list-item a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.account-list-item a:hover {
+  color: var(--accent);
 }

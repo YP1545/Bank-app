@@ -1,0 +1,9 @@
+$kind: collection
+description: Tests registration, login, role-based access (USER vs ADMIN), and the full account flow with Bearer tokens attached automatically.
+variables:
+  baseUrl: http://localhost:8080
+  userToken: ""
+  adminToken: ""
+  accountId: ""
+  adminEmail: put-your-promoted-admin-email-here
+  adminPassword: put-that-admin-password-here

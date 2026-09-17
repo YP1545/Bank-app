@@ -1,0 +1,27 @@
+$kind: http-request
+description: "Note: run 'Get My Profile (/me)' first and manually copy its 'id' into the userId collection variable, OR just call this with the userId hardcoded from an earlier Create User test. This request mirrors what the frontend does with two calls chained together."
+url: "{{baseUrl}}/api/accounts"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{userToken}}
+body:
+  type: text
+  content: |-
+    {
+      "userId": "{{userId}}",
+      "accountType": "SAVINGS"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Account id captured', function () {
+          var jsonData = pm.response.json();
+          pm.collectionVariables.set('accountId', jsonData.id);
+      });
+    language: text/javascript
+order: 1000

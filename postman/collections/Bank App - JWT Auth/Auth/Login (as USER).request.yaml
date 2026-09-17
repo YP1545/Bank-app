@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "test@example.com",
+      "password": "password123"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Response has a token', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('token');
+          pm.collectionVariables.set('userToken', jsonData.token);
+      });
+    language: text/javascript
+order: 2000

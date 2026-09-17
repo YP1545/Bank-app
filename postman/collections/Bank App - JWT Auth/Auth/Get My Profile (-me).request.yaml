@@ -1,0 +1,18 @@
+$kind: http-request
+name: Get My Profile (/me)
+url: "{{baseUrl}}/api/auth/me"
+method: GET
+headers:
+  Authorization: Bearer {{userToken}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Role is USER', function () {
+          pm.expect(pm.response.json().role).to.eql('USER');
+      });
+    language: text/javascript
+order: 4000

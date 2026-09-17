@@ -1,0 +1,18 @@
+$kind: http-request
+name: ADMIN token on /api/users -> 200
+url: "{{baseUrl}}/api/users"
+method: GET
+headers:
+  Authorization: Bearer {{adminToken}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200 (correct role)', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Response is an array', function () {
+          pm.expect(pm.response.json()).to.be.an('array');
+      });
+    language: text/javascript
+order: 3000

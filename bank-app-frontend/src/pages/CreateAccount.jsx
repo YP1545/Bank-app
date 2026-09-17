@@ -1,28 +1,32 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authFetch } from '../utils/auth';
+import { API_BASE_URL } from '../utils/api';
 
 function CreateAccount() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [accountType, setAccountType] = useState('SAVINGS');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setError('');
 
-    const userResponse = await fetch('http://localhost:8080/api/users', {
+    const meResponse = await authFetch(`${API_BASE_URL}/api/auth/me`);
+    const me = await meResponse.json();
+
+    const accountResponse = await authFetch(`${API_BASE_URL}/api/accounts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify({ userId: me.id, accountType }),
     });
-    const user = await userResponse.json();
 
-    const accountResponse = await fetch('http://localhost:8080/api/accounts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: user.id, accountType }),
-    });
     const account = await accountResponse.json();
+
+    if (!accountResponse.ok) {
+      setError(account.error || 'Could not create account');
+      return;
+    }
 
     navigate(`/accounts/${account.id}`);
   }
@@ -32,35 +36,15 @@ function CreateAccount() {
       <h1>Create Account</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
           <label>Account Type</label>
-          <select
-            value={accountType}
-            onChange={(e) => setAccountType(e.target.value)}
-          >
+          <select value={accountType} onChange={(e) => setAccountType(e.target.value)}>
             <option value="SAVINGS">Savings</option>
             <option value="CHECKING">Checking</option>
           </select>
         </div>
         <button type="submit">Create Account</button>
       </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 }
