@@ -16,6 +16,9 @@ function Navbar() {
         <li>
           <NavLink to="/data">Data</NavLink>
         </li>
+        <li>
+        <NavLink to="/create-account">Create Account</NavLink>
+        </li>
       </ul>
     </nav>
   );
