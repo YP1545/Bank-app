@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'http://localhost:8080';
+export const API_BASE_URL = 'https://d2khmi5a5r58be.cloudfront.net';
